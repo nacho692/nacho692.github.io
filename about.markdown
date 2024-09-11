@@ -4,15 +4,6 @@ title: About
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+Hola! Soy Ignacio Mariotti, programador, entusiasta de la computación, la matemática, el cine y por ahí alguien me puede confundir con un escalador.
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
-
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
-
-
-[jekyll-organization]: https://github.com/jekyll
+Todos los años me suelo enfocar en cosas distintas, desde protocolos de red, emuladores y engines gráficos y nunca termino documentando nada. Este blog nació para tratar de transmitir lo que me atrapa y, con suerte, generar el mismo interés que me generó a mí.
