@@ -13,7 +13,7 @@ La idea de este post es compartir el camino por el que pasé explicando con cier
 # Shaders
 
 Internet está llena de explicaciones del concepto de shader mucho mejores de lo que puedo desarrollar. 
-En términos simples un shader es un algoritmo que corre en la GPU y determina como se van a terminar visualizando la pantalla. Hacen calculos para iluminación, sombras y efectos. Hay muchos tipos de shaders, algunos trabajan con objetos 3d (*Vertex Shaders*), otros con geometrías (*Geometry Shaders*) y, sobre los que se vá a enfocar el artículo, shaders de píxeles (*Pixel Shaders*).
+En términos simples un shader es un algoritmo que corre en la GPU y determina como se van a terminar visualizando la pantalla. Hacen calculos para iluminación, sombras y efectos. Hay muchos tipos de shaders, algunos trabajan con objetos 3d (*Vertex Shaders*), otros con geometrías (*Geometry Shaders*) y, sobre los que se vá a enfocar el artículo, shaders que trabajan sobre píxeles (*Fragment Shaders*).
 
 Un shader de píxeles ejecuta una vez por cada pixel que forma parte de una textura y tiene como resultado un vector que indica el color de ese pixel. Para poder ejecutar de manera paralela se prohibe saber el estado de la ejecución del shader para los ótros píxeles, es decir, no se comparte información.
 A alto nivel, un shader funciona de la siguiente manera:
@@ -41,7 +41,7 @@ Tomando el pixel entrante, podemos devolver un pixel con los valores rgb rotados
 |:--:|
 | *Imagen Base* |*Rotación RGB* |
 
-Para entender más practicamente los conceptos, a continuación se presenta el shader de rotación RGB en GLSL., un lenguaje de shading similar a C definido por OpenGL.
+A continuación se puede ver una implementación del shader de rotación RGB en GLSL, un lenguaje de shading similar a C definido por OpenGL.
 
 {% highlight glsl %}
 // Rotacion RGB: Ejemplo de shader en glsl
@@ -69,6 +69,8 @@ Los ejemplos clásicos con los que vamos a trabajar son el desenfoque gaussiano,
 
 En [CustomFilters][cables-custom-filters] se puede ver una implementación simple de estos tres shaders sobre la plataforma [cables.gl][cables-gl].
 Esta plataforma permite computar shaders sin instalar software especial en nuestro sistema y sin necesariamente saber programar.
+Para ver las distintas implementaciones hay que abrir el _patch_ en el editor de cables y editar el custom shader.
+
 En los próximos artículos se van a desarrollar los filtros de desenfoque gaussiano, detección de bordes y una introducción a ecuaciones diferenciales.
 
 [genesis-digital]: https://genesis-digital.solsarratea.world/clases/dia-1
