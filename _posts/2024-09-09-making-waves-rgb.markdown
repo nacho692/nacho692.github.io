@@ -1,14 +1,14 @@
 ---
 layout: post
 title:  "Making Waves! - Rotación RGB"
-date:   2024-09-09 01:00:13 -0700
+date:   2024-09-09 01:00:13 -0300
 categories: shaders
 tags: shaders "ecuaciones diferenciales"
 ---
 
-Hace poco me incribí en el curso de [_La génesis digital de las formas_][genesis-digital] de [Sol Sarratea][sol-sarratea]. Las primeras horas de presentación me maravillaron con un mundo matemático completamente desconocido y me abrió las puertas a ver la realidad de una manera distinta.
+Hace poco me incribí en el curso de [_La génesis digital de las formas_][genesis-digital] de [Sol Sarratea][sol-sarratea]. Las primeras horas de presentación me maravillaron con un mundo matemático completamente desconocido y me mostró otra perspectiva con la que entender las cosas.
 
-La idea de este post es compartir el camino por el que pasé explicando con cierto detalle el trasfondo matemático.
+La idea de "Making Waves!" es compartir el camino por el que pasé explicando con cierto detalle el trasfondo matemático, desde filtros básicos en imágenes hasta efectos de ondas dados por ecuaciones diferenciales.
 
 # Shaders
 
@@ -38,7 +38,7 @@ Tomando el pixel entrante, podemos devolver un pixel con los valores rgb rotados
 `(r,g,b,a) -> (g,b,r,a)` 
 
 |![Base]({{site.baseurl}}/assets/making-waves/base.png)|![RGBRotation]({{site.baseurl}}/assets/making-waves/rotation.png)
-|:--:|
+|:--:|:--:|
 | *Imagen Base* |*Rotación RGB* |
 
 A continuación se puede ver una implementación del shader de rotación RGB en GLSL, un lenguaje de shading similar a C definido por OpenGL.
@@ -64,7 +64,7 @@ void main()
 Los ejemplos clásicos con los que vamos a trabajar son el desenfoque gaussiano, o _gaussian blur_, y la detección de bordes o _laplace filter_.
 
 |![Base]({{site.baseurl}}/assets/making-waves/base.png)|![Desenfoque gaussiano]({{site.baseurl}}/assets/making-waves/blur.png)|![Detección de bordes]({{site.baseurl}}/assets/making-waves/edge.png)|
-|:--:|
+|:--:|:--:|:--:|
 | *Imagen Base* | *Desenfoque gaussiano* | *Detección de bordes* |
 
 En [CustomFilters][cables-custom-filters] se puede ver una implementación simple de estos tres shaders sobre la plataforma [cables.gl][cables-gl].
