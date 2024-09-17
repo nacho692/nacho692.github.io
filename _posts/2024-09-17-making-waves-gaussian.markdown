@@ -6,12 +6,6 @@ categories: shaders
 tags: shaders "ecuaciones diferenciales"
 ---
 
-<style>
-r { color: Red }
-o { color: Orange }
-g { color: Green }
-</style>
-
 Este es el segundo artículo de una serie sobre shaders y ecuaciones diferenciales.
 
 Anterior: [Rotación RGB]({% post_url 2024-09-09-making-waves-rgb %})
@@ -47,10 +41,11 @@ El nuevo pixel promediado se puede calcular como la suma del entorno dividido la
 
 $$dg(i,j) = \frac{1}{9}\sum_{i'=i-1}^{i+1}\sum_{j'=j-1}^{j+1} m_{i'j'}$$
 
-La operación no se encuentra definida para los bordes de la imagen, hay varias maneras para manejar esta situación y como estamos diseñando nuestro propio filtro, podemos elegir lo que queramos, por ejemplo, dejar el pixel como está.
+La operación $$dg$$ no se encuentra definida para los bordes de la imagen, hay varias maneras para manejar esta situación y como estamos diseñando nuestro propio filtro, podemos elegir lo que queramos, por ejemplo, dejar el pixel como está.
 
-$$\forall i, dg(i,0) = m_{i0}\\
-\forall j, dg(0,j) = m_{0j}$$
+$$\forall i, dg(i,0) = m_{i0}$$
+
+$$\forall j, dg(0,j) = m_{0j}$$
 
 Podemos jugar con esta idea de promediar pixeles en relación a su entorno, por ejemplo, no usar un promedio ponderado. Se puede definir una función y tomar promedios en los que los pixeles más cercanos al valor que queremos tengan un peso mayor. Cuando la función elegida es gaussiana, estamos hablando de un desenfoque gaussiano.
 
@@ -121,11 +116,14 @@ def gaussian2d_kernel(size, sig):
 # Genero un kernel gaussiano de 3x3 con sigma 1
 print(gaussian2d_kernel(3, 1))
 ```
+<div style="max-width: 100vw" markdown="1">
 
 | Parámetros | Kernel |
 |---|---|
-| $$3x3, \sigma = 1$$|$$\frac{1}{15}\begin{bmatrix} 1 & 2 & 1 \\ 2 & 3 & 2 \\ 1 & 2 & 1 \end{bmatrix}$$|
-| $$5x5, \sigma = 1$$|$$\frac{1}{331}\begin{bmatrix} 1 & 4 & 7 & 4 & 1 \\ 4 & 20 & 33 & 20 & 4 \\ 7 & 33 & 55 & 33 & 7 \\ 4 & 20 & 33 & 20 & 4 \\ 1 & 4 & 7 & 4 & 1 \\\end{bmatrix}$$|
-| $$5x5, \sigma = 0.9$$|$$\frac{1}{704}\begin{bmatrix} 1 & 6 & 12 & 6 & 1 \\ 6 & 41 & 75 & 41 & 6 \\ 12 & 75 & 140 & 75 & 12 \\  6 & 41 & 75 & 41 & 6 \\ 1 & 6 & 12 & 6 & 1 \\ \end{bmatrix}$$|
+| $$3x3, \sigma = 1$$|{::nomarkdown}$$\frac{1}{15}\begin{bmatrix} 1 & 2 & 1 \\ 2 & 3 & 2 \\ 1 & 2 & 1 \end{bmatrix}$${:/}|
+| $$5x5, \sigma = 1$$|{::nomarkdown}<div style="overflow-x:auto; width:100%; display:inline-grid;">$$\frac{1}{331}\begin{bmatrix} 1 & 4 & 7 & 4 & 1 \\ 4 & 20 & 33 & 20 & 4 \\ 7 & 33 & 55 & 33 & 7 \\ 4 & 20 & 33 & 20 & 4 \\ 1 & 4 & 7 & 4 & 1 \\\end{bmatrix}$$</div>{:/}|
+| $$5x5, \sigma = 0.9$$|{::nomarkdown}<div style="overflow-x:auto; width:100%; display:inline-grid;">$$\frac{1}{704}\begin{bmatrix} 1 & 6 & 12 & 6 & 1 \\ 6 & 41 & 75 & 41 & 6 \\ 12 & 75 & 140 & 75 & 12 \\  6 & 41 & 75 & 41 & 6 \\ 1 & 6 & 12 & 6 & 1 \\ \end{bmatrix}$$</div>{:/}|
+
+</div>
 
 En el siguiente artículo vamos a ver cómo este tipo de operaciones puede utilizarse para detectar bordes con un poco de análisis matemático
