@@ -43,14 +43,14 @@ m_{H1} & m_{H2} & \dots & \dots &\dots & \dots & \dots & m_{HW} \\
 \end{bmatrix}
 $$
 
-El nuevo pixel promediado se puede calcular como la suma del entorno dividido la cantidad de elementos
+El nuevo pixel promediado se puede calcular como la suma del entorno dividido la cantidad de elementos:
 
-$$g(i,j) = \frac{1}{9}\sum_{i'=i-1}^{i+1}\sum_{j'=j-1}^{j+1} m_{i'j'}$$
+$$dg(i,j) = \frac{1}{9}\sum_{i'=i-1}^{i+1}\sum_{j'=j-1}^{j+1} m_{i'j'}$$
 
 La operación no se encuentra definida para los bordes de la imagen, hay varias maneras para manejar esta situación y como estamos diseñando nuestro propio filtro, podemos elegir lo que queramos, por ejemplo, dejar el pixel como está.
 
-$$\forall i, g(i,0) = m_{i0}\\
-\forall j, g(0,j) = m_{0j}$$
+$$\forall i, dg(i,0) = m_{i0}\\
+\forall j, dg(0,j) = m_{0j}$$
 
 Podemos jugar con esta idea de promediar pixeles en relación a su entorno, por ejemplo, no usar un promedio ponderado. Se puede definir una función y tomar promedios en los que los pixeles más cercanos al valor que queremos tengan un peso mayor. Cuando la función elegida es gaussiana, estamos hablando de un desenfoque gaussiano.
 
