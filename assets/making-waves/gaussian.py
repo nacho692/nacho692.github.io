@@ -9,4 +9,5 @@ def gaussian2d_kernel(size, sig):
     kernel *= 1/np.min(kernel)
     return np.round(kernel, 0)
 
-print(gaussian2d_kernel(9, 2))
+kernel = gaussian2d_kernel(5, 0.9)
+print(kernel, np.sum(kernel))
