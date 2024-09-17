@@ -8,7 +8,7 @@ tags: shaders "ecuaciones diferenciales"
 
 Hace poco me incribí en el curso de [_La génesis digital de las formas_][genesis-digital] de [Sol Sarratea][sol-sarratea]. Las primeras horas de presentación me maravillaron con un mundo matemático completamente desconocido y me mostró otra perspectiva con la que entender las cosas.
 
-La idea de "Making Waves!" es compartir el camino por el que pasé explicando con cierto detalle el trasfondo matemático, desde filtros básicos en imágenes hasta efectos de ondas dados por ecuaciones diferenciales.
+La idea de _Making Waves!_ (Haciendo Olas) es compartir el camino por el que pasé explicando con cierto detalle el trasfondo matemático, desde filtros básicos en imágenes hasta efectos de ondas dados por ecuaciones diferenciales.
 
 # Shaders
 
@@ -72,6 +72,8 @@ Esta plataforma permite computar shaders sin instalar software especial en nuest
 Para ver las distintas implementaciones hay que abrir el _patch_ en el editor de cables y editar el custom shader.
 
 En los próximos artículos se van a desarrollar los filtros de desenfoque gaussiano, detección de bordes y una introducción a ecuaciones diferenciales.
+
+Siguiente: [Desenfoque gaussiano]({% post_url 2024-09-17-making-waves-gaussian %})
 
 [genesis-digital]: https://genesis-digital.solsarratea.world/clases/dia-1
 [sol-sarratea]: https://solsarratea.world/

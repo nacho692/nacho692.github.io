@@ -12,6 +12,10 @@ o { color: Orange }
 g { color: Green }
 </style>
 
+Este es el segundo artículo de una serie sobre shaders y ecuaciones diferenciales.
+
+Anterior: [Rotación RGB]({% post_url 2024-09-09-making-waves-rgb %})
+
 # Desenfoque gaussiano
 
 El desenfoque gaussiano es una técnica utilizada en procesamiento de imágenes para suavizar o difuminar una imagen. 
