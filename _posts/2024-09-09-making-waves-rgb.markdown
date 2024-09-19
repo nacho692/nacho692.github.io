@@ -37,9 +37,23 @@ Tomando el pixel entrante, podemos devolver un pixel con los valores rgb rotados
 
 `(r,g,b,a) -> (g,b,r,a)` 
 
-|![Base]({{site.baseurl}}/assets/making-waves/base.png)|![RGBRotation]({{site.baseurl}}/assets/making-waves/rotation.png)
-|:--:|:--:|
-| *Imagen Base* |*Rotación RGB* |
+<table style="text-align: center">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody>
+<tr>
+<td markdown="span">![Base]({{site.baseurl}}/assets/making-waves/base.png)</td>
+<td markdown="span">![RGBRotation]({{site.baseurl}}/assets/making-waves/rotation.png)</td>
+</tr>
+<tr>
+<td markdown="span">*Imagen Base*</td>
+<td markdown="span">*Rotación RGB*</td>
+</tr>
+</tbody>
+</table>
+
 
 A continuación se puede ver una implementación del shader de rotación RGB en GLSL, un lenguaje de shading similar a C definido por OpenGL.
 
@@ -63,9 +77,25 @@ void main()
 
 Los ejemplos clásicos con los que vamos a trabajar son el desenfoque gaussiano, o _gaussian blur_, y la detección de bordes o _laplace filter_.
 
-|![Base]({{site.baseurl}}/assets/making-waves/base.png)|![Desenfoque gaussiano]({{site.baseurl}}/assets/making-waves/blur.png)|![Detección de bordes]({{site.baseurl}}/assets/making-waves/edge.png)|
-|:--:|:--:|:--:|
-| *Imagen Base* | *Desenfoque gaussiano* | *Detección de bordes* |
+<table style="text-align: center">
+<colgroup>
+<col width="33%" />
+<col width="33%" />
+<col width="33%" />
+</colgroup>
+<tbody>
+<tr>
+<td markdown="span">![Base]({{site.baseurl}}/assets/making-waves/base.png)</td>
+<td markdown="span">![Desenfoque gaussiano]({{site.baseurl}}/assets/making-waves/blur.png)</td>
+<td markdown="span">![Detección de bordes]({{site.baseurl}}/assets/making-waves/edge.png)</td>
+</tr>
+<tr>
+<td markdown="span">*Imagen Base*</td>
+<td markdown="span">*Desenfoque gaussiano*</td>
+<td markdown="span">*Detección de bordes*</td>
+</tr>
+</tbody>
+</table>
 
 En [CustomFilters][cables-custom-filters] se puede ver una implementación simple de estos tres shaders sobre la plataforma [cables.gl][cables-gl].
 Esta plataforma permite computar shaders sin instalar software especial en nuestro sistema y sin necesariamente saber programar.
@@ -73,7 +103,7 @@ Para ver las distintas implementaciones hay que abrir el _patch_ en el editor de
 
 En los próximos artículos se van a desarrollar los filtros de desenfoque gaussiano, detección de bordes y una introducción a ecuaciones diferenciales.
 
-Siguiente: [Desenfoque gaussiano]({% post_url 2024-09-17-making-waves-gaussian %})
+Siguiente: [Making Waves! Desenfoque gaussiano]({% post_url 2024-09-17-making-waves-gaussian %})
 
 [genesis-digital]: https://genesis-digital.solsarratea.world/clases/dia-1
 [sol-sarratea]: https://solsarratea.world/

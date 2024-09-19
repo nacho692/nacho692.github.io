@@ -15,10 +15,22 @@ Anterior: [Making Waves! Rotación RGB]({% post_url 2024-09-09-making-waves-rgb 
 El desenfoque gaussiano es una técnica utilizada en procesamiento de imágenes para suavizar o difuminar una imagen. 
 Lo hace promediando el valor de los pixeles en relación a su entorno.
 
-
-|![Base]({{site.baseurl}}/assets/making-waves/base.png)|![Desenfoque gaussiano]({{site.baseurl}}/assets/making-waves/blur.png)|
-|:--:|:--:|:--:|
-| *Imagen Base* | *Desenfoque gaussiano* |
+<table style="text-align: center">
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<tbody>
+<tr>
+<td markdown="span">![Base]({{site.baseurl}}/assets/making-waves/base.png)</td>
+<td markdown="span">![Desenfoque gaussiano]({{site.baseurl}}/assets/making-waves/blur.png)</td>
+</tr>
+<tr>
+<td markdown="span">*Imagen Base*</td>
+<td markdown="span">*Desenfoque gaussiano*</td>
+</tr>
+</tbody>
+</table>
 
 Asumiendo una imagen en blanco y negro, se puede modelar como una matriz $$m$$ de dimensiones $$WxH$$ en donde $$m_{ij}$$ es un valor entre 0 y 1 que define que tan negro es el pixel en la posición $$(i,j)$$.
 
