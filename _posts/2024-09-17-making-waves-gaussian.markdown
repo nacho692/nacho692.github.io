@@ -8,7 +8,7 @@ tags: shaders "ecuaciones diferenciales"
 
 Este es el segundo artículo de una serie sobre shaders y ecuaciones diferenciales.
 
-Anterior: [Rotación RGB]({% post_url 2024-09-09-making-waves-rgb %})
+Anterior: [Making Waves! Rotación RGB]({% post_url 2024-09-09-making-waves-rgb %})
 
 # Desenfoque gaussiano
 
