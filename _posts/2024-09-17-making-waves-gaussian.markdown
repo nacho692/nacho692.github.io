@@ -139,3 +139,5 @@ print(gaussian2d_kernel(3, 1))
 </div>
 
 En el siguiente artículo vamos a ver cómo este tipo de operaciones puede utilizarse para detectar bordes con un poco de análisis matemático
+
+Siguiente: [Making Waves! Detección de bordes]({% post_url 2024-10-01-making-waves-laplace-filter %})
