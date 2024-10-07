@@ -213,6 +213,7 @@ Fijando $\sigma = 1.4$ se puede jugar con $\delta$.[^2]
 
 [^2]: Estuve una cantidad de tiempo absurdo tratando de encontrar animaciones que pudiera pasar a html facil. Terminé utilizando plotly y no pude incluir dos sliders en la misma animación.
 
+El código para generar los gráficos lo pueden ver en el [notebook]({{site.baseurl}}/assets/making-waves/edge-detection.ipynb). Lamentablemente todavía no preparé el servidor estático para que muestre notebooks de manera feliz.
 
 Pudimos ver como con análisis de derivadas podemos obtener un insight interesante de las features de una imagen.
 En el siguiente artículo vamos a ver como estas ideas se relacionan con cambios a través del tiempo. 
