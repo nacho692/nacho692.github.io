@@ -1,0 +1,149 @@
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<div id="pathing_chart" style="min-width: 100px; max-width: 450px; width:100%"></div>
+<script>
+let pathing = {
+    draw_graph: function() {
+        var margin = {top: 10, right: 40, bottom: 40, left: 45},
+            width = 450 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+
+        var total_width = width + margin.left + margin.right;
+        var total_height = height + margin.top + margin.bottom;
+        
+        
+        var svg = d3.select("#pathing_chart")
+        .append("svg")
+            .attr("viewBox", "0 0 " + total_width + " " + total_height)
+        .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var xDomain = [0,10];
+        var yDomain = [0,40];
+        var yScale = d3.scaleLinear().range([height, 0]).domain(yDomain);
+        var xScale = d3.scaleLinear().range([0,width]).domain(xDomain);
+        var initial_acc = 1
+        var T = function(d) {
+            return {x: initial_acc + d.x,
+                    y: d.y + d.x + initial_acc/2}
+        };
+
+
+        var colorScale = d3.scaleSequential(
+            d3.interpolateRgbBasis(["blue","green","yellow","orange","red"]))
+            .domain(yDomain);
+
+
+        def = svg.append("def")
+        def.append("clipPath")
+            .attr("id", "x-axis-clip")
+            .append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", width)
+            .attr("height", height)
+            .attr("fill", "white");
+
+        var magnitude = function(p) {
+            return Math.sqrt(p.x*p.x + p.y*p.y);
+        }
+
+        vectors_path = svg.append("g").attr("id", "vectors").attr("clip-path", "url(#x-axis-clip)");
+
+        var draw_vector = function(p, origin, color) {
+            p = {x: p.x - origin.x, y: p.y - origin.y};
+            marker_name = "arrow" + p.x + p.y;
+            def.append('marker')
+                .attr("id", marker_name)
+                .attr("viewBox", "0 -5 10 10")
+                .attr("refX", 0)
+                .attr("refY", 0)
+                .attr("markerWidth", 4)
+                .attr("markerHeight", 4)
+                .attr("orient", "auto")
+                .append("path")
+                .attr("d", "M0,-5 L10,0L0,5").attr('fill', color)
+                ;
+
+            return vectors_path.append("path")
+                .attr("d", "M" + xScale(0) + " " + yScale(0) + " L" + xScale(p.x) + " " + yScale(p.y))
+                .attr("stroke", color)
+                .attr("stroke-width", 2)
+                .attr("fill", "none")
+                .style("opacity", 0)
+                .attr("transform", "translate(" + (xScale(origin.x) - xScale(0)) + "," + (yScale(origin.y) - yScale(0)) + ")")
+                .attr("marker-end", "url(#" + marker_name + ")")
+                ;
+        }
+
+        svg.append("g").attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(xScale))
+            .append("text")
+            .attr("class", "axis-title")
+            .attr("y", 25)
+            .attr("dy", ".71em")
+            .attr("x", (width+margin.left)/2)
+            .style("text-anchor", "end")
+            .attr("fill", "black")
+            .text("Velocidad");
+
+        svg.append("g")
+            .call(d3.axisLeft(yScale))
+            .append("text")
+            .attr("class", "axis-title")
+            .attr("transform", "rotate(-90)")
+            .attr("y", -40)
+            .attr("dy", ".71em")
+            .attr("x", -(height-margin.bottom)/2)
+            .style("text-anchor", "end")
+            .attr("fill", "black")
+            .text("Posición");
+        
+        
+        vs  = [{x: 1, y: 1}];
+        for (i = 0; i < 7; i++) {
+            vs.push(T(vs[vs.length-1]));
+        }
+        
+        ts = vs.map(v => draw_vector(v, {x: 0, y: 0}, "red"));
+        ds = vs.slice(1).map(function(_, i) {
+            return draw_vector(vs[i+1], vs[i], "blue");
+        });
+        ds.forEach(function(d, i) {
+            d.transition().style("opacity", 1);
+        });
+
+        var animate = function() {
+            ts.forEach((_, i) => {
+                transition = ts[i].transition()
+                transition.duration(2000)
+                .delay(2000 * i)
+                .style("opacity", 1);
+
+                if (i == ts.length - 1) {
+                    transition.on("end", function() {
+                        transition = ts.map(function(t, i) {
+                                return t.transition().duration(2000).style("opacity", 0)
+                            })[0];
+                        transition.on("end", animate);
+                    });
+                        
+                    return;
+                }
+            });
+        }
+        animate()
+
+        svg.append("circle").attr("cx", margin.left + 10).attr("cy",margin.top).attr("r", 6).style("fill", "red")
+        text = svg.append("text").attr("x", margin.left + 30).attr("y", margin.top).text("T(v_t, p_t)").style("font-size", "15px").attr("alignment-baseline","middle")
+
+        newY = text.node().getBBox().y + text.node().getBBox().height + 30
+
+        svg.append("circle").attr("cx", margin.left + 10).attr("cy",newY).attr("r", 6).style("fill", "blue");
+        text = svg.append("text").attr("x",  margin.left + 30).attr("y", newY).text("(v_t, p_t) - T(v_t, p_t)").style("font-size", "15px").attr("alignment-baseline","middle");
+    },
+}
+
+
+pathing.draw_graph();
+</script>

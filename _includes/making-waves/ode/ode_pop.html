@@ -1,0 +1,305 @@
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<div style="min-width: 100px; max-width: 450px; width:100%">
+    <div id="ode_pop_chart" style="width:100%;">
+    </div>
+    <div id="ode_pop_phase_chart" style="width:100%;">
+    </div>
+    <div style="float:left; width:50%; padding:5px; box-sizing: border-box;">
+        <b>Predador</b> <span class="dot" style="height: 13px; width:13px; border-radius: 50%; background-color:green; display: inline-block;"></span>
+        <dl>
+            <dt>$y$(0): <span id="display_predator_initial"></span></dt>
+            <dd><input type="range" style="width: 100%;" name="Dens de lobos inicial" id=predator_initial min="0" max="20" step="1" value="10"></dd>
+            <dt>Crecimiento $\delta$: <span id="display_predator_growth_rate"></span></dt>
+            <dd><input type="range" style="width: 100%;" name="Nacimiento de lobos" id=predator_growth_rate min="0" max="2" step="0.1" value="0.1"></dd>
+            <dt>Muerte $\gamma$: <span id="display_predator_death_rate"></span></dt>
+            <dd><input type="range" style="width: 100%;" name="Muerte de lobos" id=predator_death_rate min="0" max="2" step="0.1" value="0.1"></dd>
+        </dl>
+    </div>
+    <div style="float:left; width:50%; padding:5px; box-sizing: border-box;">
+        <b>Presa</b> <span class="dot" style="height: 13px; width:13px; border-radius: 50%; background-color:blue; display: inline-block;"></span>
+        <dl>
+            <dt>$x$(0): <span id="display_prey_initial"></span></dt>
+            <dd><input type="range" style="width: 100%;" name="Dens de conejos inicial" id=prey_initial min="0" max="20" step="1" value="10"></dd>
+            <dt>Crecimiento $\alpha$: <span id="display_prey_growth_rate"></span></dt>
+            <dd><input type="range" style="width: 100%;" name="Nacimiento de conejos" id=prey_growth_rate min="0" max="2" step="0.1" value="1.1"></dd>
+            <dt>Muerte $\beta$: <span id="display_prey_death_rate"></span></dt>
+            <dd><input type="range" style="width: 100%;" name="Muerte de conejos" id=prey_death_rate min="0" max="2" step="0.1" value="1.1"></dd>
+        </dl>
+    </div>
+</div>
+<script>
+let ode_pop = {
+    prey_color: "blue",
+    predator_color: "green",
+    phase_curve_color: "red",
+
+    getCurvePoints: function(curve, n) {
+        let points = [];
+        let step = curve.node().getTotalLength()/n;
+        d3.range(0, curve.node().getTotalLength(), step).forEach((i) => {
+            var point = curve.node().getPointAtLength(i);
+            points.push([point.x, point.y]);
+        });
+        if (points.length > n) {
+            points.pop()
+        }
+        return points;
+    },
+    draw_graph: function() {
+        // set the dimensions and margins of the graph
+        var margin = {top: 0, right: 40, bottom: 40, left: 40},
+            width = 450 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+
+        var total_width = width + margin.left + margin.right;
+        var total_height = height + margin.top + margin.bottom;
+
+        // line graph
+        var svg_pop = d3.select("#ode_pop_chart")
+            .append("svg")
+                .attr("viewBox", "0 0 " + total_width + " " + total_height)
+            .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        // phase graph
+        var svg_pop_phase = d3.select("#ode_pop_phase_chart")
+            .append("svg")
+                .attr("viewBox", "0 0 " + total_width + " " + total_height)
+            .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+        var xDomain = [0,40];
+        var yDomain = [0,1000];
+
+        var prey_c = {i_density: 10, growth: 1.1, death: 0.4}
+        var predator_c = {i_density: 10, growth: 0.1, death: 0.4}
+        
+        var yScale = d3.scaleLinear().range([height,0]).domain(yDomain);
+        var xScale = d3.scaleLinear().range([0,width]).domain(xDomain);
+
+        var yScale_phase = d3.scaleLinear().range([height,0]).domain(yDomain);
+        var xScale_phase = d3.scaleLinear().range([0,width]).domain(yDomain);
+
+        var eps = 0.0005
+        var x_space = d3.range(xDomain[0], xDomain[1], eps)
+
+        var prey_growth = function(current_prey, current_predator, eps) {
+            return prey_c.growth*eps*current_prey - prey_c.death*current_prey*eps*current_predator
+        }
+        var predator_growth = function(current_prey, current_predator, eps) {
+            return predator_c.growth*current_prey*eps*current_predator - predator_c.death*eps*current_predator
+        }
+
+        var preys = []
+        var predators = []
+
+        var c_preys = d3.line()
+                .x(function(i) { return xScale(x_space[i]) })
+                .y(function(i) { return yScale(preys[i]) })
+
+        var c_predators = d3.line()
+            .x(function(i) { return xScale(x_space[i]) })
+            .y(function(i) { return yScale(predators[i]) })
+
+        var c_phase = d3.line()
+            .x(function(i) {return xScale_phase(preys[i])})
+            .y(function(i) {return yScale_phase(predators[i])})
+
+        predators_curve = svg_pop.append('path')
+            .attr('stroke', this.predator_color)
+            .attr('fill', 'none')
+            .attr('stroke-width', 2)
+        p_curve = predators_curve;
+        predators_marker = svg_pop.append('circle')
+            .attr('r', 3)
+            .attr('stroke', this.predator_color)
+        predators_marker.append('animateMotion')
+            .attr('repeatCount', 'indefinite')
+            .attr('fill', 'freeze')
+            .attr('begin', 'indefinite');
+
+        preys_curve = svg_pop.append('path')
+            .attr('stroke', this.prey_color)
+            .attr('fill', 'none')
+            .attr('stroke-width', 1);
+        preys_marker = svg_pop.append('circle')
+            .attr('r', 3)
+            .attr('stroke', this.prey_color)
+        preys_marker.append('animateMotion')
+            .attr('repeatCount', 'indefinite')
+            .attr('fill', 'freeze')
+            .attr('begin', 'indefinite');
+
+        phase_curve = svg_pop_phase.append('path')
+            .attr('stroke', this.phase_curve_color)
+            .attr('stroke-width', 1)
+            .attr('fill', 'none');
+
+        bottomAxis = svg_pop.append("g").attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(xScale));
+        bottomAxis.append("text")
+                .attr("class", "axis-title")
+                .attr("y", 25)
+                .attr("dy", ".71em")
+                .attr("x", (width+margin.left)/2)
+                .style("text-anchor", "end")
+                .attr("fill", "black")
+                .text("Tiempo");
+
+        leftAxis = svg_pop.append("g")
+                .call(d3.axisLeft(yScale));
+        leftAxis.append("text")
+                .attr("class", "axis-title")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -30)
+                .attr("dy", ".71em")
+                .attr("x", -(height-margin.bottom)/2)
+                .style("text-anchor", "end")
+                .attr("fill", "black")
+                .text("Densidad");
+
+
+        async function updateGraph() {
+
+            var x_space = d3.range(xDomain[0], xDomain[1], eps)
+
+            preys_curve.interrupt()
+            predators_curve.interrupt()
+            phase_curve.interrupt()
+
+            preys = [prey_c.i_density]
+            predators = [predator_c.i_density]
+
+            x_space.forEach((_, i) => {
+                preys.push(preys[i] + prey_growth(preys[i], predators[i], eps))
+                predators.push(predators[i] + predator_growth(preys[i], predators[i], eps))
+            });
+            var vals = preys.concat(predators);
+            yDomain = [Math.min(...vals), Math.max(...vals)];
+            yScale = d3.scaleLinear().range([height,0]).domain(yDomain);
+            xScale = d3.scaleLinear().range([0,width]).domain(xDomain);
+
+            yScale_phase = d3.scaleLinear().range([height,0]).domain(yDomain);
+            xScale_phase = d3.scaleLinear().range([0,width]).domain(yDomain);
+
+            bottomAxis.transition()
+                .duration(1000)
+                .call(d3.axisBottom(xScale))
+            leftAxis.transition()
+                .duration(1000)
+                .call(d3.axisLeft(yScale))
+
+
+            phase_curve.attr('d', c_phase(d3.range(0, x_space.length, 1)))
+            phase_length = phase_curve.node().getTotalLength();
+            phase_curve
+                .attr("stroke-dasharray", phase_length + " " + phase_length)
+                .attr("stroke-dashoffset", phase_length)
+
+            predators_curve
+                .attr('d', c_predators(d3.range(0, x_space.length, 1)))
+            predators_length = predators_curve.node().getTotalLength();
+            predators_curve
+                .attr("stroke-dasharray", predators_length + " " + predators_length)
+                .attr("stroke-dashoffset", predators_length)
+            predators_marker.attr('opacity',0)
+
+            preys_curve.attr('d', c_preys(d3.range(0, x_space.length, 1)))
+            preys_length = preys_curve.node().getTotalLength();
+            preys_curve
+                .attr("stroke-dasharray", preys_length + " " + preys_length)
+                .attr("stroke-dashoffset", preys_length)
+            preys_marker.attr('opacity',0)
+        
+
+            await new Promise(r => setTimeout(r, 250));
+            phase_curve
+                .transition()
+                .ease(d3.easeLinear)
+                .attr("stroke-dashoffset", 0)
+                .duration(10000);
+
+            keyPoints = d3.range(0, 1, 1/100).reduce((acc, i) => i == 0 ? i:acc + ';' + i, '') + ';1'
+
+            xs = ode_pop.getCurvePoints(predators_curve, 100).map((p) => p[0]);
+            xs = xs.map((x) => (x - Math.min(...xs))/(Math.max(...xs) - Math.min(...xs)))
+            predators_marker.attr('opacity',1)
+            predators_marker.select('animateMotion')
+                .attr('keyTimes', xs.reduce((acc, i) => i == 0 ? i : acc + ';' + i, '') + ';1')
+                .attr('keyPoints', keyPoints)
+                .attr('calcMode','linear')
+                .attr('dur', '10s')
+                .attr('path', c_predators(d3.range(0, x_space.length, 1)));
+            predators_marker.select('animateMotion').node().beginElement();
+            predators_curve
+                .transition()
+                .ease(d3.easeLinear)
+                .attr("stroke-dashoffset", 0)
+                .duration(10000);
+
+
+            xs = ode_pop.getCurvePoints(preys_curve, 100).map((p) => p[0]);
+            xs = xs.map((x) => (x - Math.min(...xs))/(Math.max(...xs) - Math.min(...xs)))
+            preys_marker.attr('opacity',1)
+            preys_marker.select('animateMotion')
+                .attr('keyTimes', xs.reduce((acc, i) => i == 0 ? i : acc + ';' + i, '') + ';1')
+                .attr('keyPoints', keyPoints)
+                .attr('calcMode','linear')
+                .attr('dur', '10s')
+                .attr('path', c_preys(d3.range(0, x_space.length, 1)));
+            preys_marker.select('animateMotion').node().beginElement();
+            preys_curve
+                .transition()
+                .ease(d3.easeLinear)
+                .attr("stroke-dashoffset", 0)
+                .duration(10000);
+        };
+
+        d3.select("#display_prey_initial").text(prey_c.i_density);
+        d3.select("#display_prey_growth_rate").text(prey_c.growth);
+        d3.select("#display_prey_death_rate").text(predator_c.death);
+
+        d3.select("#display_predator_initial").text(predator_c.i_density);
+        d3.select("#display_predator_growth_rate").text(predator_c.growth);
+        d3.select("#display_predator_death_rate").text(predator_c.death);
+
+        d3.select("#display_step_size").text(eps);
+
+        d3.select("#prey_initial").on("change", function(d){
+            prey_c.i_density = parseFloat(this.value)
+            updateGraph()
+            d3.select("#display_prey_initial").text(this.value);
+        });
+        d3.select("#prey_growth_rate").on("change", function(d){
+            prey_c.growth = parseFloat(this.value)
+            updateGraph()
+            d3.select("#display_prey_growth_rate").text(this.value);
+        });
+        d3.select("#prey_death_rate").on("change", function(d){
+            prey_c.death = parseFloat(this.value)
+            updateGraph()
+            d3.select("#display_prey_death_rate").text(this.value);
+        });
+
+        d3.select("#predator_initial").on("change", function(d){
+            predator_c.i_density = parseFloat(this.value)
+            updateGraph()
+            d3.select("#display_predator_initial").text(this.value);
+        });
+        d3.select("#predator_growth_rate").on("change", function(d){
+            predator_c.growth = parseFloat(this.value)
+            updateGraph()
+            d3.select("#display_predator_growth_rate").text(this.value);
+        });
+        d3.select("#predator_death_rate").on("change", function(d){
+            predator_c.death = parseFloat(this.value)
+            updateGraph()
+            d3.select("#display_predator_death_rate").text(this.value);
+        });
+        updateGraph();
+    }
+}
+ode_pop.draw_graph();
+</script>

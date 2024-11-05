@@ -1,0 +1,166 @@
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<div id="acceleration_chart" style="min-width: 100px; max-width: 450px; width:100%"></div>
+<script>
+let acceleration = {
+    draw_graph: function() {
+    var margin = {top: 10, right: 40, bottom: 40, left: 40},
+        width = 450 - margin.left - margin.right,
+        height = 400 - margin.top - margin.bottom;
+
+    var total_width = width + margin.left + margin.right;
+    var total_height = height + margin.top + margin.bottom;
+
+    // append the svg object to the body of the page
+    var svg = d3.select("#acceleration_chart")
+    .append("svg")
+        .attr("viewBox", "0 0 " + total_width + " " + total_height)
+    .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+    var xDomain = [-5,5];
+    var yDomain = [0,5];
+
+    var xScale = d3.scaleLinear().range([0,width]).domain(xDomain);
+    var yScale = d3.scaleLinear().range([height,0]).domain(yDomain);
+
+    var initial_acc = 1
+    
+    var T = function(d) {
+            return {x: initial_acc + d.x,
+                    y: d.y + d.x + initial_acc/2}
+        };
+
+    var vfield = function(d) {
+        d.vx = initial_acc;
+        d.vy = d.x + initial_acc/2;
+        d.magnitude = Math.sqrt(d.vx*d.vx + d.vy*d.vy);
+    }
+
+
+    var grid_spacing = 0.3
+    data = [];
+    for (var i=xDomain[0]; i <= xDomain[1]; i+= grid_spacing){
+        for (var j=yDomain[0]; j<=yDomain[1]; j+= grid_spacing) {
+            var pt = {x:i, y:j};
+            vfield(pt);
+            data.push(pt);
+        }
+    }
+
+    var max_magnitude = data.reduce(function (max_, it) {
+                return max_ > it.magnitude ? max_ : it.magnitude;
+            }, 0);
+
+    var colorScale = d3.scaleSequential(
+        d3.interpolateRgbBasis(["blue","green","yellow","orange","red"]))
+        .domain([0,max_magnitude]);
+
+
+    def = svg.append("def")
+    def.append("clipPath")
+        .attr("id", "x-axis-clip")
+        .append("rect")
+        .attr("x", 0)
+        .attr("y", 0)
+        .attr("width", width)
+        .attr("height", height)
+        .attr("fill", "white");
+
+
+    plot = svg.append("g").attr("id", "vectors").attr("clip-path", "url(#x-axis-clip)");
+        
+    data.forEach(function(p) {
+        // we first scale down to a unit vector
+        p.vx /= p.magnitude;
+        p.vy /= p.magnitude;
+        // and now scale it to our own scale
+        p.vx *= (grid_spacing-0.1);
+        p.vy *= (grid_spacing-0.1);
+        
+        color = colorScale(p.magnitude);
+        marker_name = "arrow" + p.x + p.y;
+        def.append('marker')
+            .attr("id", marker_name)
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 0)
+            .attr("refY", 0)
+            .attr("markerWidth", 2)
+            .attr("markerHeight", 2)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M0,-5 L10,0L0,5").attr('fill', color)
+            ;
+
+        plot.append("path")
+            .attr("d", "M" + xScale(0) + " " + yScale(0) + " L" + xScale(p.vx) + " " + yScale(p.vy))
+            .attr("stroke", color)
+            .attr("stroke-width", 2)
+            .attr("fill", "none")
+            .attr("transform", "translate(" + (xScale(p.x) - xScale(0)) + "," + (yScale(p.y) - yScale(0)) + ")")
+            .attr("marker-end", "url(#" + marker_name + ")")
+            ;
+        })
+
+    // a=1, p=1, v=1
+    var speed = function(t) {
+        return initial_acc*t + 1
+    }
+    var position = function(t) {
+        return initial_acc*t*t/2 + t + 1
+    }
+
+    var pposition = d3.line()
+                .x(function(t) { return xScale(speed(t)) })
+                .y(function(t) { return yScale(position(t)) });
+
+    previous_graph = plot.append('path')
+        .attr('stroke', 'green')
+        .attr('fill', 'none')
+        .attr('stroke-width', 2)
+        .attr('d', pposition(d3.range(-5, 5, 0.1)))
+
+    total_length = previous_graph.node().getTotalLength();
+    previous_graph
+        .attr("stroke-dasharray", total_length + " " + total_length)
+        .attr("stroke-dashoffset", -total_length)
+        .transition().on("end", function repeat() {
+            previous_graph
+            .transition()
+            .attr("stroke-dashoffset", -total_length)
+            .duration(2000)
+            .on("end", function() {
+                previous_graph.attr("stroke-dashoffset", total_length)
+                    .transition()
+                    .duration(5000)
+                    .attr("stroke-dashoffset", 0)
+                    .on("end", repeat);
+            })
+        });
+
+    svg.append("g").attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(xScale))
+        .append("text")
+        .attr("class", "axis-title")
+        .attr("y", 25)
+        .attr("dy", ".71em")
+        .attr("x", (width+margin.left)/2)
+        .style("text-anchor", "end")
+        .attr("fill", "black")
+        .text("Velocidad");
+
+    svg.append("g")
+        .call(d3.axisLeft(yScale))
+        .append("text")
+        .attr("class", "axis-title")
+        .attr("transform", "rotate(-90)")
+        .attr("y", -40)
+        .attr("dy", ".71em")
+        .attr("x", -(height-margin.bottom)/2)
+        .style("text-anchor", "end")
+        .attr("fill", "black")
+        .text("Posición");
+    }
+}
+acceleration.draw_graph();
+</script>

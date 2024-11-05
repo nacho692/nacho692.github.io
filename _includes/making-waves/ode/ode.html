@@ -1,0 +1,185 @@
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<div style="min-width: 100px; max-width: 450px; width:100%">
+    <div id="legend" style="float:left; max-width: 150px; width: 100%; height: fit-content;">
+    </div>
+    <div id="ode_chart" style="width:100%;">
+    </div>
+    <div style="width:100%">
+        <dl>
+            <dt>Posición Inicial: <span id="display_pos">2</span></dt>
+            <dd><input type="range" style="width: 100%;" name="Posición inicial" id=initial_pos min="-5" max="5" step="0.1" value="2"></dd>
+            <dt>Velocidad Inicial: <span id="display_speed">-1</span></dt>
+            <dd><input type="range" style="width: 100%;" name="Velocidad inicial" id=initial_speed min="-5" max="5" step="0.1" value="-1"></dd>
+            <dt>Aceleración Inicial: <span id="display_acc">0.5</span></dt>
+            <input type="range" style="width: 100%;" name="Aceleración inicial" id=initial_acc min="-5" max="5" step="0.1" value="0.5">
+        </dl>      
+    </div>
+</div>
+<script>
+let ode = {
+    speed_color: "blue",
+    position_color: "green",
+    acceleration_color: "red",
+    draw_legend: function() {
+
+        var margin = {top: 20, right: 40, bottom: 20, left: 20};
+
+        var svg = d3.select("#legend").append("svg").attr("height", 60)
+
+        svg.append("circle").attr("cx", margin.left).attr("cy",margin.top).attr("r", 6).style("fill", this.position_color)
+        text = svg.append("text").attr("x", margin.left + 20).attr("y", margin.top + 5).text("Posición").style("font-size", "15px").attr("alignment-baseline","middle")
+
+        newX = text.node().getBBox().x + text.node().getBBox().width + 20
+
+        svg.append("circle").attr("cx", newX).attr("cy",margin.top).attr("r", 6).style("fill", this.speed_color);
+        text = svg.append("text").attr("x",  newX + 10).attr("y", margin.top + 5).text("Velocidad").style("font-size", "15px").attr("alignment-baseline","middle");
+
+        newX = text.node().getBBox().x + text.node().getBBox().width + 20
+
+        svg.append("circle").attr("cx", newX).attr("cy", margin.top).attr("r", 6).style("fill", this.acceleration_color);
+        text = svg.append("text").attr("x", newX + 10).attr("y", margin.top + 5).text("Aceleración").style("font-size", "15px").attr("alignment-baseline","middle");
+
+    },
+    draw_graph: function() {
+        // set the dimensions and margins of the graph
+        var margin = {top: 0, right: 40, bottom: 40, left: 40},
+            width = 450 - margin.left - margin.right,
+            height = 400 - margin.top - margin.bottom;
+
+        var total_width = width + margin.left + margin.right;
+        var total_height = height + margin.top + margin.bottom;
+
+        // append the svg object to the body of the page
+        var svg = d3.select("#ode_chart")
+        .append("svg")
+            .attr("viewBox", "0 0 " + total_width + " " + total_height)
+        .append("g")
+            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+        var xDomain = [0,5];
+        var yDomain = [-1,5];
+
+        var initial_acc = 0.5
+        var initial_speed = -1
+        var initial_pos = 2
+        
+        var yScale = d3.scaleLinear().range([height,0]).domain(yDomain);
+        var xScale = d3.scaleLinear().range([0,width]).domain(xDomain);
+
+        var x_space = []
+        var x_spacing = 0.1
+        for(x = xDomain[0]; x <= xDomain[1]; x += 0.1) {
+            x_space.push(x)
+        }
+
+        var position = function(t) {
+            return initial_acc*t*t/2 + initial_speed*t + initial_pos
+        }
+        var speed = function(t) {
+            return initial_acc*t + initial_speed
+        }
+
+        var acceleration = function(t) {
+            return initial_acc
+        }
+
+
+        var pposition = d3.line()
+                .x(function(t) { return xScale(t) })
+                .y(function(t) { return yScale(position(t)) })
+
+        var pspeed = d3.line()
+            .x(function(t) { return xScale(t) })
+            .y(function(t) { return yScale(speed(t)) })
+
+        var pacceleration = d3.line()
+            .x(function(t) { return xScale(t) })
+            .y(function(t) { return yScale(acceleration(t)) })
+
+
+        position_curve = svg.append('path')
+            .attr('stroke', 'green')
+            .attr('fill', 'none')
+            .attr('stroke-width', 2)
+
+        speed_curve = svg.append('path')
+            .attr('stroke', 'blue')
+            .attr('fill', 'none')
+            .attr('stroke-width', 2);
+
+        aceleration_curve = svg.append('path')
+            .attr('stroke', 'red')
+            .attr('fill', 'none')
+            .attr('stroke-width', 2);
+
+        bottomAxis = svg.append("g").attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(xScale));
+        bottomAxis.append("text")
+                .attr("class", "axis-title")
+                .attr("y", 25)
+                .attr("dy", ".71em")
+                .attr("x", (width+margin.left)/2)
+                .style("text-anchor", "end")
+                .attr("fill", "black")
+                .text("Tiempo");
+
+        leftAxis = svg.append("g")
+                .call(d3.axisLeft(yScale));
+        leftAxis.append("text")
+                .attr("class", "axis-title")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -30)
+                .attr("dy", ".71em")
+                .attr("x", -(height-margin.bottom)/2)
+                .style("text-anchor", "end")
+                .attr("fill", "black")
+
+
+        function updateGraph(ip, is, ia) {
+            var vals = x_space.map(position).concat(x_space.map(speed), x_space.map(acceleration));
+            yDomain = [Math.min(...vals), Math.max(...vals)];
+
+            yScale = d3.scaleLinear().range([height,0]).domain(yDomain);
+            xScale = d3.scaleLinear().range([0,width]).domain(xDomain);
+
+            bottomAxis.transition()
+                .call(d3.axisBottom(xScale))
+            leftAxis.transition()
+                .call(d3.axisLeft(yScale))
+
+            position_curve
+                .transition()
+                .attr('d', pposition(x_space))
+            speed_curve
+                .transition()
+                .attr('d', pspeed(x_space))
+            aceleration_curve
+                .transition()
+                .attr('d', pacceleration(x_space))
+        };
+
+        // Listen to the sliders
+        d3.select("#initial_pos").on("change", function(d){
+            initial_pos = parseFloat(this.value)
+            updateGraph()
+            d3.select("#display_pos").text(this.value);
+        });
+        // Listen to the sliders
+        d3.select("#initial_speed").on("change", function(d){
+            initial_speed = parseFloat(this.value)
+            updateGraph()
+            d3.select("#display_speed").text(this.value);
+        });
+        // Listen to the sliders
+        d3.select("#initial_acc").on("change", function(d){
+            initial_acc = parseFloat(this.value)
+            updateGraph()
+            d3.select("#display_acc").text(this.value);
+        });
+        updateGraph();
+    }
+}
+ode.draw_legend();
+ode.draw_graph();
+</script>
