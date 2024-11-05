@@ -10,7 +10,7 @@ Hace poco me incribí en el curso de [_La génesis digital de las formas_][genes
 
 La idea de _Making Waves!_ (Haciendo Olas) es compartir el camino por el que pasé explicando con cierto detalle el trasfondo matemático, desde filtros básicos en imágenes hasta efectos de ondas dados por ecuaciones diferenciales.
 
-# Shaders
+## Shaders
 
 Internet está llena de explicaciones del concepto de shader mucho mejores de lo que puedo desarrollar. 
 En términos simples un shader es un algoritmo que corre en la GPU y determina como se van a terminar visualizando la pantalla. Hacen calculos para iluminación, sombras y efectos. Hay muchos tipos de shaders, algunos trabajan con objetos 3d (*Vertex Shaders*), otros con geometrías (*Geometry Shaders*) y, sobre los que se vá a enfocar el artículo, shaders que trabajan sobre píxeles (*Fragment Shaders*).
@@ -30,7 +30,7 @@ def apply_shader(shader, texture):
 
 Si se está procesando un video, un juego o algo que requiera actualizaciones constantes visuales, se suele ejecutar el shader una vez por frame, por lo que tiene que ser una operación rápida.
 
-# Rotación RGB
+## Rotación RGB
 
 Un píxel es un vector de 4 dimensiones: (r,g,b,a) con valores entre 0 y 1. 
 Tomando el pixel entrante, podemos devolver un pixel con los valores rgb rotados:

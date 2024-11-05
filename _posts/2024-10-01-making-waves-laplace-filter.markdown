@@ -140,7 +140,7 @@ Al laplaciano aplicado luego de una gaussiana, lo llamamos _Laplacian of Gaussia
 
 En la Figura 2 se hace una comparación de una sola fila de píxeles de una imagen con distintos filtros aplicados.
 Mientras más suave sea el filtro gaussiano, más suave se hace la linea de píxeles.
-*
+
 Una manera de computar este nuevo filtro es primero pasar la imagen por el desenfoque gaussiano y luego por el laplaciano.
 Por suerte, las convoluciones son asociativas y conmutativas, por lo que se puede simplificar la operación.
 
@@ -217,8 +217,6 @@ El código para generar los gráficos lo pueden ver en el [notebook]({{site.base
 
 Pudimos ver como con análisis de derivadas podemos obtener un insight interesante de las features de una imagen.
 En el siguiente artículo vamos a ver como estas ideas se relacionan con cambios a través del tiempo. 
-¿Que pasaría si en vez de modificar los valores de la imgen directamente, modificamos las derivadas y hacemos que los valores se ajusten a eso?
-
 
 
 #### Lecturas recomendadas y referencias:

@@ -10,7 +10,7 @@ Este es el segundo artículo de una serie sobre shaders y ecuaciones diferencial
 
 Anterior: [Making Waves! Rotación RGB]({% post_url 2024-09-09-making-waves-rgb %})
 
-# Desenfoque gaussiano
+## Desenfoque gaussiano
 
 El desenfoque gaussiano es una técnica utilizada en procesamiento de imágenes para suavizar o difuminar una imagen. 
 Lo hace promediando el valor de los pixeles en relación a su entorno.
@@ -68,7 +68,7 @@ Podemos jugar con esta idea de promediar pixeles en relación a su entorno, por 
 Antes de seguir, es útil entender el concepto de convolución para ver una generalización de esta idea.
 
 
-## Convolución
+### Convolución
 
 La convolución es una operación matemática, una especie de media móvil en la que se agrupan y promedian conjuntos de puntos. En el caso del desenfoque gaussiano, se aplica un kernel gaussiano a cada píxel de la imagen, calculando el promedio ponderado de los valores de los píxeles vecinos.
 
@@ -88,7 +88,7 @@ $$
 
 Para que estemos tomando un promedio efectivamente, la suma de todos los elementos tiene que dar 1. Pero se puede jugar con otros valores y ver que pasa.
 
-## Kernel de desenfoque gaussiano
+### Kernel de desenfoque gaussiano
 
 Considerando convoluciones, sólo queda plantear una matriz para representar un promedio gaussiano.
 Para lograrlo, consideremos la función gaussiana en dos dimensiones $$G(x,y)$$, $$\sigma = 1$$ y un kernel de $$3x3$$. Idealmente, el centro del kernel debería coincidir con el centro de la gaussiana e ir aplanandose hacia los bordes, por ejemplo el kernel.
