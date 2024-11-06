@@ -1,8 +1,8 @@
 <script src="https://d3js.org/d3.v4.js"></script>
 
-<div id="pathing_chart" style="min-width: 100px; max-width: 450px; width:100%"></div>
+<div id="linear_t_chart" style="min-width: 100px; max-width: 450px; width:100%"></div>
 <script>
-let pathing = {
+let linear_t = {
     draw_graph: function() {
         var margin = {top: 10, right: 40, bottom: 40, left: 45},
             width = 450 - margin.left - margin.right,
@@ -12,7 +12,7 @@ let pathing = {
         var total_height = height + margin.top + margin.bottom;
         
         
-        var svg = d3.select("#pathing_chart")
+        var svg = d3.select("#linear_t_chart")
         .append("svg")
             .attr("viewBox", "0 0 " + total_width + " " + total_height)
         .append("g")
@@ -145,5 +145,5 @@ let pathing = {
 }
 
 
-pathing.draw_graph();
+linear_t.draw_graph();
 </script>

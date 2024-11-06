@@ -9,6 +9,7 @@ tags: shaders "ecuaciones diferenciales"
 Este es el segundo artículo de una serie sobre shaders y ecuaciones diferenciales.
 
 Anterior: [Making Waves! Rotación RGB]({% post_url 2024-09-09-making-waves-rgb %})
+Siguiente: [Making Waves! Detección de bordes]({% post_url 2024-10-01-making-waves-laplace-filter %})
 
 ## Desenfoque gaussiano
 
@@ -140,4 +141,5 @@ print(gaussian2d_kernel(3, 1))
 
 En el siguiente artículo vamos a ver cómo este tipo de operaciones puede utilizarse para detectar bordes con un poco de análisis matemático
 
+Anterior: [Making Waves! Rotación RGB]({% post_url 2024-09-09-making-waves-rgb %})
 Siguiente: [Making Waves! Detección de bordes]({% post_url 2024-10-01-making-waves-laplace-filter %})

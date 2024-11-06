@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Making Waves! - Detección de bordes"
+date:   2024-10-01 10:00:13 -0300
 categories: shaders
 tags: shaders "ecuaciones diferenciales"
 ---
@@ -216,10 +217,11 @@ Fijando $\sigma = 1.4$ se puede jugar con $\delta$.[^2]
 El código para generar los gráficos lo pueden ver en el [notebook]({{site.baseurl}}/assets/making-waves/edge-detection.ipynb). Lamentablemente todavía no preparé el servidor estático para que muestre notebooks de manera feliz.
 
 Pudimos ver como con análisis de derivadas podemos obtener un insight interesante de las features de una imagen.
-En el siguiente artículo vamos a ver como estas ideas se relacionan con cambios a través del tiempo. 
+En el siguiente artículo vamos a ver como estas ideas se relacionan con cambios a través del tiempo.
 
+Siguiente: [Making Waves! Ecuaciones diferenciales ordinarias]({% post_url 2024-11-06-making-waves-ode %})
 
 #### Lecturas recomendadas y referencias:
-* [Image Processing with Fourier Transform](https://pub.towardsai.net/image-processing-with-fourier-transform-4ebc66651f2d)
-* [Fourier Transform](https://homepages.inf.ed.ac.uk/rbf/HIPR2/freqfilt.htm)
-* [Edge Detectors](https://homepages.inf.ed.ac.uk/rbf/HIPR2/edgdetct.htm)
+* [Image Processing with Fourier Transform - Towards AI - Albert Nguyen](https://pub.towardsai.net/image-processing-with-fourier-transform-4ebc66651f2d)
+* [Fourier Transform - Image Processing Learning Resources](https://homepages.inf.ed.ac.uk/rbf/HIPR2/freqfilt.htm)
+* [Edge Detectors - Image Processing Learning Resources](https://homepages.inf.ed.ac.uk/rbf/HIPR2/edgdetct.htm)

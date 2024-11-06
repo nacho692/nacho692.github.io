@@ -10,6 +10,8 @@ Hace poco me incribí en el curso de [_La génesis digital de las formas_][genes
 
 La idea de _Making Waves!_ (Haciendo Olas) es compartir el camino por el que pasé explicando con cierto detalle el trasfondo matemático, desde filtros básicos en imágenes hasta efectos de ondas dados por ecuaciones diferenciales.
 
+Siguiente: [Making Waves! Desenfoque gaussiano]({% post_url 2024-09-17-making-waves-gaussian %})
+
 ## Shaders
 
 Internet está llena de explicaciones del concepto de shader mucho mejores de lo que puedo desarrollar. 

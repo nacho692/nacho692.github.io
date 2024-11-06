@@ -1,6 +1,7 @@
 ---
 layout: post
 title:  "Making Waves! Ecuaciones diferenciales ordinarias"
+date:   2024-11-06 11:15:00 -0300
 categories: shaders
 tags: shaders "ecuaciones diferenciales"
 ---
@@ -46,14 +47,14 @@ Si consideramos un objeto con una aceleración constante $a$, podemos considerar
 
 
 <div style="display: flex; justify-content: center;">
-{% include making-waves/ode/ode.html %}
+{% include making-waves/ode/motion.html %}
 </div>
 
 Existen tantas funciones solución como velocidades iniciales y posiciones iniciales existen. 
 Hay una manera interesante en la que podemos observar como se comporta el sistema para todos los pares $(v_0, p_0)$.
 La idea es definir una transformación lineal $T$ tal que $T(v_t, p_t) = (v_{t+1}, p_{t+1})$.
 Es decir, dado un estado inicial, $T$ devuelve el paso en el instante siguiente. 
-Con un poco de algebra podemos ver como despejar esta fórmula.
+Con un poco de algebra se puede despejar esta fórmula.
 
 $$
 \begin{align*}
@@ -80,7 +81,7 @@ Veamos un ejemplo con $a = 1, v_0 = 1, p_0 = 1$.
 | $4$ | $(5, 21.4375)$ | $(6, 18.5)$ | $(1, 5.5)$ |
 
 <div style="display: flex; justify-content: center;">
-{% include making-waves/ode/pathing.html %}
+{% include making-waves/ode/linear_t.html %}
 </div>
 
 El gráfico anterior muestra como, en base al estado del sistema, dado por $(v_t, p_t)$, podemos calcular el estado siguiente.
@@ -90,7 +91,7 @@ Un detalle a considerar es que para el dibujo, los vectores de diferencia están
 En vez de graficar un solo camino posible para el sistema, se puede armar una grilla y evaluar todos al mismo tiempo.
 
 <div style="display: flex; justify-content: center;">
-{% include making-waves/ode/acceleration.html %}
+{% include making-waves/ode/vector_field.html %}
 </div>
 
 El gráfico anterior muestra, para cada tupla $(v, p)$, a que estado pasa el sistema. 
@@ -132,12 +133,29 @@ Para graficar se puede separar el eje horizontal del gráfico en pasos de tamañ
 [^2]: Depende de la función a aproximar, es clave que el epsilon sea lo suficientemente chico, en caso contrario la aproximación lineal puede separarse bastante de la solución.
 
 <div style="display: flex; justify-content: center;">
-{% include making-waves/ode/ode_pop.html %}
+{% include making-waves/ode/predator_prey.html %}
 </div>
 
 El resultado es cíclico, cuando las presas llegan a determinada población, causan que la población de los predadores incremente a tal punto que se consumen todas, luego la densidad de predadores baja por falta de alimento.
+El segundo gráfico presenta una curva de nivel de las funciones y fue generado de la misma manera que el primero.
 
+Otra manera de generarlo y demostrar la naturaleza cíclica de las ecuaciones es, mediante manipulación algebraica, obtener la ecuación de la curva:
 
-### Links copados
+$$
+c = \delta x(t) + \beta y(t) - \gamma log(x(t)) - \alpha log(y(t))
+$$
 
-* El visualizador de ecuaciones diferenciales
+> Para ver la derivación de la formula y más información sobre el sistema de ecuaciones, recomiendo el video de Exploring Maths: [Predator-Prey Population Models \|\| Lotka-Volterra Equations](https://www.youtube.com/watch?v=DDEvlLa9z_U)
+
+En este artículo vimos una introducción a ecuaciones diferenciales ordinarias, con una sola variable. 
+Pero si queremos hablar de cambio de imagenes a través del tiempo (shaders), necesitamos mínimamente tres variables: $x, y, t$.
+
+En el próximo artículo vamos a salir de los confines de las ODE con la ecuación de calor y la vuelta del laplaciano que utilizamos previamente para detección de bordes.
+
+#### Lecturas recomendadas y referencias
+
+* [ Differential equations, a tourist's guide \| DE1 - 3Blue1Brown](https://www.youtube.com/watch?v=p_di4Zn4wz4): La mejor introducción a ecuaciones diferenciales que encontré
+* [Ordinary diferential equations - Physics Courses, Colorado](https://physicscourses.colorado.edu/phys2210/phys2210_fa21/lecture/lec06-odes/)
+* [Wikipedia: Lotka–Volterra equations](https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations)
+* [Predator-Prey Population Models \|\| Lotka-Volterra Equations - Exploring Maths](https://www.youtube.com/watch?v=DDEvlLa9z_U): Muy buen video sobre las ecuaciones de Lotka-Volterra
+* [1.4 The Lotka-Volterra predator-prey model - Hong Kong University of Science and Technology](https://math.libretexts.org/Bookshelves/Applied_Mathematics/Mathematical_Biology_(Chasnov)/01%3A_Population_Dynamics/1.04%3A_The_Lotka-Volterra_Predator-Prey_Model)
