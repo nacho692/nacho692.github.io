@@ -9,6 +9,7 @@ tags: shaders "ecuaciones diferenciales"
 Este es el tercer artículo de una serie sobre shaders y ecuaciones diferenciales.
 
 Anterior: [Making Waves! - Desenfoque gaussiano]({% post_url 2024-09-17-making-waves-gaussian %})
+Siguiente: [Making Waves! Ecuaciones diferenciales ordinarias]({% post_url 2024-11-06-making-waves-ode %})
 
 ## Detección de bordes
 
@@ -219,6 +220,7 @@ El código para generar los gráficos lo pueden ver en el [notebook]({{site.base
 Pudimos ver como con análisis de derivadas podemos obtener un insight interesante de las features de una imagen.
 En el siguiente artículo vamos a ver como estas ideas se relacionan con cambios a través del tiempo.
 
+Anterior: [Making Waves! - Desenfoque gaussiano]({% post_url 2024-09-17-making-waves-gaussian %})
 Siguiente: [Making Waves! Ecuaciones diferenciales ordinarias]({% post_url 2024-11-06-making-waves-ode %})
 
 #### Lecturas recomendadas y referencias:

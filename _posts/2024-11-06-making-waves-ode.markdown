@@ -49,6 +49,10 @@ Si consideramos un objeto con una aceleración constante $a$, podemos considerar
 <div style="display: flex; justify-content: center;">
 {% include making-waves/ode/motion.html %}
 </div>
+<div style="text-align: right;" >
+    <a style="font-size:12px;" 
+    href="https://github.com/nacho692/nacho692.github.io/blob/main/_includes/making-waves/ode/motion.html">Código fuente</a>
+</div>
 
 Existen tantas funciones solución como velocidades iniciales y posiciones iniciales existen. 
 Hay una manera interesante en la que podemos observar como se comporta el sistema para todos los pares $(v_0, p_0)$.
@@ -83,6 +87,10 @@ Veamos un ejemplo con $a = 1, v_0 = 1, p_0 = 1$.
 <div style="display: flex; justify-content: center;">
 {% include making-waves/ode/linear_t.html %}
 </div>
+<div style="text-align: right;" >
+    <a style="font-size:12px;" 
+    href="https://github.com/nacho692/nacho692.github.io/blob/main/_includes/making-waves/ode/linear_t.html">Código fuente</a>
+</div>
 
 El gráfico anterior muestra como, en base al estado del sistema, dado por $(v_t, p_t)$, podemos calcular el estado siguiente.
 Calculando la diferencia entre el estado en $t$ y en $t + 1$ podemos ver gráficamente el camino que toma el sistema, incrementando
@@ -92,6 +100,10 @@ En vez de graficar un solo camino posible para el sistema, se puede armar una gr
 
 <div style="display: flex; justify-content: center;">
 {% include making-waves/ode/vector_field.html %}
+</div>
+<div style="text-align: right;" >
+    <a style="font-size:12px;" 
+    href="https://github.com/nacho692/nacho692.github.io/blob/main/_includes/making-waves/ode/vector_field.html">Código fuente</a>
 </div>
 
 El gráfico anterior muestra, para cada tupla $(v, p)$, a que estado pasa el sistema. 
@@ -134,6 +146,10 @@ Para graficar se puede separar el eje horizontal del gráfico en pasos de tamañ
 
 <div style="display: flex; justify-content: center;">
 {% include making-waves/ode/predator_prey.html %}
+</div>
+<div style="text-align: right;" >
+    <a style="font-size:12px;" 
+    href="https://github.com/nacho692/nacho692.github.io/blob/main/_includes/making-waves/ode/predator_prey.html">Código fuente</a>
 </div>
 
 El resultado es cíclico, cuando las presas llegan a determinada población, causan que la población de los predadores incremente a tal punto que se consumen todas, luego la densidad de predadores baja por falta de alimento.

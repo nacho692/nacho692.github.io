@@ -30,12 +30,12 @@ let motion = {
         svg.append("circle").attr("cx", margin.left).attr("cy",margin.top).attr("r", 6).style("fill", this.position_color)
         text = svg.append("text").attr("x", margin.left + 20).attr("y", margin.top + 5).text("Posición").style("font-size", "15px").attr("alignment-baseline","middle")
 
-        newX = text.nmotion().getBBox().x + text.nmotion().getBBox().width + 20
+        newX = text.node().getBBox().x + text.node().getBBox().width + 20
 
         svg.append("circle").attr("cx", newX).attr("cy",margin.top).attr("r", 6).style("fill", this.speed_color);
         text = svg.append("text").attr("x",  newX + 10).attr("y", margin.top + 5).text("Velocidad").style("font-size", "15px").attr("alignment-baseline","middle");
 
-        newX = text.nmotion().getBBox().x + text.nmotion().getBBox().width + 20
+        newX = text.node().getBBox().x + text.node().getBBox().width + 20
 
         svg.append("circle").attr("cx", newX).attr("cy", margin.top).attr("r", 6).style("fill", this.acceleration_color);
         text = svg.append("text").attr("x", newX + 10).attr("y", margin.top + 5).text("Aceleración").style("font-size", "15px").attr("alignment-baseline","middle");
