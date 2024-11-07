@@ -233,7 +233,7 @@ En el siguiente artículo vamos a ver como estas ideas se relacionan con cambios
 
 Anterior: [Making Waves! - Desenfoque gaussiano]({% post_url 2024-09-17-making-waves-gaussian %})
 
-Siguiente: [Making Waves! Ecuaciones diferenciales ordinarias]({% post_url 2024-11-06-making-waves-ode %})
+Siguiente: [Making Waves! - Ecuaciones diferenciales ordinarias]({% post_url 2024-11-06-making-waves-ode %})
 
 #### Lecturas recomendadas y referencias:
 * [Image Processing with Fourier Transform - Towards AI - Albert Nguyen](https://pub.towardsai.net/image-processing-with-fourier-transform-4ebc66651f2d)

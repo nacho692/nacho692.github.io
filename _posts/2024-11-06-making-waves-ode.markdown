@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Making Waves! Ecuaciones diferenciales ordinarias"
+title:  "Making Waves! - Ecuaciones diferenciales ordinarias"
 date:   2024-11-06 11:15:00 -0300
 categories: shaders
 tags: shaders "ecuaciones diferenciales"
