@@ -190,30 +190,32 @@ let prey_predator = {
 
         function updateGraph() {
 
-            var x_space = d3.range(xDomain[0], xDomain[1], eps)
-
-            preys = [prey_c.i_density]
-            predators = [predator_c.i_density]
-            
             predators_marker.attr('opacity', 0);
             preys_marker.attr('opacity', 0);
             phase_marker.attr('opacity', 0);
 
             phase_curve.interrupt()
-            phase_marker.select('animateMotion').node().endElement();
 
             predators_curve.interrupt()
-            predators_marker.select('animateMotion').node().endElement();
 
             preys_curve.interrupt()
-            preys_marker.select('animateMotion').node().endElement();
+            
+            var x_space = d3.range(xDomain[0], xDomain[1], eps)
+
+            preys = [prey_c.i_density]
+            predators = [predator_c.i_density]
+            
 
             x_space.forEach((_, i) => {
                 preys.push(preys[i] + prey_growth(preys[i], predators[i], eps))
                 predators.push(predators[i] + predator_growth(preys[i], predators[i], eps))
             });
             var vals = preys.concat(predators);
-            yDomain = [Math.min(...vals), Math.max(...vals)];
+            max = vals.reduce((max, v) => max >= v ? max : v, -Infinity);
+            min = vals.reduce((min, v) => min <= v ? min : v, Infinity);
+
+            yDomain = [min, max];
+
             yScale = d3.scaleLinear().range([height,0]).domain(yDomain);
             xScale = d3.scaleLinear().range([0,width]).domain(xDomain);
 
@@ -240,30 +242,28 @@ let prey_predator = {
                 .attr('x2', xScale_phase(yDomain[1]))
                 .attr('y2', yScale_phase(yDomain[1]))
 
-            phase_curve.transition().duration(2000).attr('d', c_phase(d3.range(0, x_space.length, 1)))
+            phase_curve.transition().duration(2000).attr('d', c_phase(d3.range(0, x_space.length, 1)));
             predators_curve.transition().duration(2000).attr('d', c_predators(d3.range(0, x_space.length, 1)));
-            preys_curve.transition().duration(2000).attr('d', c_preys(d3.range(0, x_space.length, 1))).on('end', function() {
+            preys_curve.transition().duration(2000).attr('d', c_preys(d3.range(0, x_space.length, 1))).on('end', () => {
                 preys_marker.select('animateMotion')
                     .attr('calcMode','linear')
                     .attr('dur', '10s')
                     .attr('path', c_preys(d3.range(0, x_space.length, 1)));
-                preys_marker.select('animateMotion').node().beginElement();
-                preys_marker.attr('opacity', 1);
 
                 predators_marker.select('animateMotion')
                     .attr('calcMode','linear')
                     .attr('dur', '10s')
                     .attr('path', c_predators(d3.range(0, x_space.length, 1)));
-                predators_marker.select('animateMotion').node().beginElement();
-                predators_marker.attr('opacity', 1);
 
                 phase_marker.select('animateMotion')
                     .attr('dur', '10s')
                     .attr('calcMode','linear')
                     .attr('path', c_phase(d3.range(0, x_space.length, 1)));
-                phase_marker.select('animateMotion').node().beginElement();
-                phase_marker.attr('opacity', 1);
-            });
+
+                preys_marker.attr('opacity', 1);
+                predators_marker.attr('opacity', 1);
+                phase_marker.attr('opacity', 1); 
+        });
 
         };
 
@@ -309,6 +309,9 @@ let prey_predator = {
             d3.select("#display_predator_death_rate").text(this.value);
         });
         updateGraph();
+        preys_marker.select('animateMotion').node().beginElement();
+        predators_marker.select('animateMotion').node().beginElement();
+        phase_marker.select('animateMotion').node().beginElement();
     }
 }
 prey_predator.draw_graph();

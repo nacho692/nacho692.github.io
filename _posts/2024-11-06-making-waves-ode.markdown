@@ -74,8 +74,10 @@ f(t+1) &= \frac{a(t+1)^2}{2} + f'(0)(t+1) + f(0)\\
 $$
 
 Bien, tiene sentido, la velocidad siguiente es la actual sumandole la aceleración inicial.
-La posición actual es la misma pero sumada la velocidad actual y una parte de la aceleración, que es lo que se agrega por incrementarse la velocidad linealmente en este "paso".
+La posición siguiente es la actual pero sumada la velocidad actual y una parte de la aceleración, que es lo que se agrega por incrementarse la velocidad linealmente en este "paso".
 Veamos un ejemplo con $a = 1, v_0 = 1, p_0 = 1$.
+
+<div style="max-width: 100vw; overflow-x:auto; width:100%;" markdown="1">
 
 |$t$| $(v_t, p_t)$ | $T(v_t, p_t)$ | $T(v_t, p_t) - (v_t, p_t)$ |
 | $0$ | $(1, 1)$ | $(2, 2.5)$ | $(1, 1.5)$ |
@@ -83,6 +85,8 @@ Veamos un ejemplo con $a = 1, v_0 = 1, p_0 = 1$.
 | $2$ | $(3, 5.75)$ | $(4, 8.5)$ | $(1, 3.5)$ |
 | $3$ | $(4, 11.675)$ | $(5, 13)$ | $(1, 4.5)$ |
 | $4$ | $(5, 21.4375)$ | $(6, 18.5)$ | $(1, 5.5)$ |
+
+</div>
 
 <div style="display: flex; justify-content: center;">
 {% include making-waves/ode/linear_t.html %}
@@ -147,10 +151,13 @@ Para graficar se puede separar el eje horizontal del gráfico en pasos de tamañ
 <div style="display: flex; justify-content: center;">
 {% include making-waves/ode/predator_prey.html %}
 </div>
-<div style="text-align: right;" >
+<div style="text-align: right;" markdown="span">
     <a style="font-size:12px;" 
     href="https://github.com/nacho692/nacho692.github.io/blob/main/_includes/making-waves/ode/predator_prey.html">Código fuente</a>
+    <span>[^3]</span>
 </div>
+
+[^3]: La idea es que los marcadores sincronicen, si estás usando chrome es posible que la animación no funcione bien. Por algún motivo chrome y firefox animan el marcador a distinto [ritmo](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/calcMode). En chrome spline no funciona, y linear anima como si fuera paced. En firefox parece funcionar bien.  
 
 El resultado es cíclico, cuando las presas llegan a determinada población, causan que la población de los predadores incremente a tal punto que se consumen todas, luego la densidad de predadores baja por falta de alimento.
 El segundo gráfico presenta una curva de nivel de las funciones y fue generado de la misma manera que el primero.

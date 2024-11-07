@@ -9,6 +9,7 @@ tags: shaders "ecuaciones diferenciales"
 Este es el tercer artículo de una serie sobre shaders y ecuaciones diferenciales.
 
 Anterior: [Making Waves! - Desenfoque gaussiano]({% post_url 2024-09-17-making-waves-gaussian %})
+
 Siguiente: [Making Waves! Ecuaciones diferenciales ordinarias]({% post_url 2024-11-06-making-waves-ode %})
 
 ## Detección de bordes
@@ -191,7 +192,10 @@ print(kernel_log_2d(7, 1))
 <tbody>
 <tr>
 <td markdown="span">Kernel LoG con $\sigma = 1$, $7x7$</td>
-<td markdown="span">{::nomarkdown}$$\begin{bmatrix}
+<td markdown="span">
+{::nomarkdown}
+<div style="overflow-x:auto; width:100%; display:inline-grid;">
+$$\begin{bmatrix}
 -0 & -1 & -3 & -4 & -3 & -1 & -0 \\
 -1 & -5 & -12 & -14 & -12 & -5 & -1 \\
 -3 & -12 & -0 & 30 & -0 & -12 & -3 \\
@@ -199,7 +203,10 @@ print(kernel_log_2d(7, 1))
 -3 & -12 & -0 & 30 & -0 & -12 & -3 \\
 -1 & -5 & -12 & -14 & -12 & -5 & -1 \\
 -0 & -1 & -3 & -4 & -3 & -1 & -0 \\
-\end{bmatrix}$${:/}</td>
+\end{bmatrix}$$
+</div>
+{:/}
+</td>
 </tr>
 </tbody>
 </table>
@@ -208,10 +215,14 @@ Idealmente el kernel de convolución debería ser tan grande como información a
 Mientras incrementa el valor $\sigma$, más se aplana la gaussiana y menos bordes se van a encontrar.
 
 El siguiente gráfico muestra como varía LoG en base a $\sigma$ y como esto afecta el resultado con $\delta = 0$.
-<iframe src="{{site.baseurl}}/assets/making-waves/edge_detection_sigma.html" height="500px" width="500px" style="border:none; display:block; margin:auto;"></iframe>
+<div style="margin:auto; max-width:500px; overflow-x:auto; display:block;">
+<iframe src="{{site.baseurl}}/assets/making-waves/edge_detection_sigma.html" height="500px" width="500px" style="border:none; overflow-x:auto; width:100%; display:inline-grid; margin:auto;"></iframe>
+</div>
 
 Fijando $\sigma = 1.4$ se puede jugar con $\delta$.[^2]
-<iframe src="{{site.baseurl}}/assets/making-waves/edge_detection_delta.html" height="500px" width="500px" style="border:none; display:block; margin:auto;"></iframe>
+<div style="margin:auto; max-width:500px; overflow-x:auto; display:block;">
+<iframe src="{{site.baseurl}}/assets/making-waves/edge_detection_delta.html" height="500px" width="500px" style="border:none;"></iframe>
+</div>
 
 [^2]: Estuve una cantidad de tiempo absurdo tratando de encontrar animaciones que pudiera pasar a html facil. Terminé utilizando plotly y no pude incluir dos sliders en la misma animación.
 
@@ -221,6 +232,7 @@ Pudimos ver como con análisis de derivadas podemos obtener un insight interesan
 En el siguiente artículo vamos a ver como estas ideas se relacionan con cambios a través del tiempo.
 
 Anterior: [Making Waves! - Desenfoque gaussiano]({% post_url 2024-09-17-making-waves-gaussian %})
+
 Siguiente: [Making Waves! Ecuaciones diferenciales ordinarias]({% post_url 2024-11-06-making-waves-ode %})
 
 #### Lecturas recomendadas y referencias:
