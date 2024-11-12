@@ -102,11 +102,6 @@ let prey_predator = {
         predators_marker = svg_pop.append('circle')
             .attr('r', 3)
             .attr('stroke', this.predator_color)
-        predators_marker.append('animateMotion')
-            .attr('repeatCount', 'indefinite')
-            .attr('fill', 'freeze')
-            .attr('begin', 'indefinite')
-            .attr('opacity', 0);
 
         preys_curve = svg_pop.append('path')
             .attr('stroke', this.prey_color)
@@ -115,11 +110,6 @@ let prey_predator = {
         preys_marker = svg_pop.append('circle')
             .attr('r', 3)
             .attr('stroke', this.prey_color)
-        preys_marker.append('animateMotion')
-            .attr('repeatCount', 'indefinite')
-            .attr('fill', 'freeze')
-            .attr('begin', 'indefinite')
-            .attr('opacity', 0);
 
         phase_curve = svg_pop_phase.append('path')
             .attr('stroke', this.phase_curve_color)
@@ -128,11 +118,6 @@ let prey_predator = {
         phase_marker = svg_pop_phase.append('circle')
             .attr('r', 3)
             .attr('stroke', this.phase_curve_color)
-        phase_marker.append('animateMotion')
-            .attr('repeatCount', 'indefinite')
-            .attr('fill', 'freeze')
-            .attr('begin', 'indefinite')
-            .attr('opacity', 0);
 
         bottomAxis = svg_pop.append("g").attr("transform", "translate(0," + height + ")")
                 .call(d3.axisBottom(xScale));
@@ -242,28 +227,34 @@ let prey_predator = {
                 .attr('x2', xScale_phase(yDomain[1]))
                 .attr('y2', yScale_phase(yDomain[1]))
 
+            move_markers = () => {
+                svg_pop
+                    .transition()
+                    .ease(d3.easeLinear)
+                    .duration(10000)
+                    .tween(null, function repeat() {
+                        return function (t) {
+                            const i = d3.max([Math.round(t * x_space.length - 1), 0]);
+                            const x = xScale(x_space[i]);
+                            predators_marker.attr('cx', x);
+                            predators_marker.attr('cy', yScale(predators[i]));
+                            preys_marker.attr('cx', x);
+                            preys_marker.attr('cy', yScale(preys[i]));
+
+                            phase_marker.attr('cx', xScale_phase(preys[i]));
+                            phase_marker.attr('cy', yScale_phase(predators[i]));
+                        };
+                    }).on('end', move_markers);
+
+            }
             phase_curve.transition().duration(2000).attr('d', c_phase(d3.range(0, x_space.length, 1)));
             predators_curve.transition().duration(2000).attr('d', c_predators(d3.range(0, x_space.length, 1)));
             preys_curve.transition().duration(2000).attr('d', c_preys(d3.range(0, x_space.length, 1))).on('end', () => {
-                preys_marker.select('animateMotion')
-                    .attr('calcMode','linear')
-                    .attr('dur', '10s')
-                    .attr('path', c_preys(d3.range(0, x_space.length, 1)));
-
-                predators_marker.select('animateMotion')
-                    .attr('calcMode','linear')
-                    .attr('dur', '10s')
-                    .attr('path', c_predators(d3.range(0, x_space.length, 1)));
-
-                phase_marker.select('animateMotion')
-                    .attr('dur', '10s')
-                    .attr('calcMode','linear')
-                    .attr('path', c_phase(d3.range(0, x_space.length, 1)));
-
+                move_markers();
                 preys_marker.attr('opacity', 1);
                 predators_marker.attr('opacity', 1);
                 phase_marker.attr('opacity', 1); 
-        });
+            });
 
         };
 
@@ -309,9 +300,6 @@ let prey_predator = {
             d3.select("#display_predator_death_rate").text(this.value);
         });
         updateGraph();
-        preys_marker.select('animateMotion').node().beginElement();
-        predators_marker.select('animateMotion').node().beginElement();
-        phase_marker.select('animateMotion').node().beginElement();
     }
 }
 prey_predator.draw_graph();
